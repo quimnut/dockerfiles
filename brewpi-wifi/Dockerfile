@@ -26,7 +26,7 @@ RUN echo 'altport = socket://example:23' >> /home/brewpi/settings/config.cfg
 RUN chown -R brewpi:users /home/brewpi/settings
 RUN chmod +x /home/brewpi/*.py
 RUN chmod +x /home/brewpi/utils/*.sh
-RUN echo "* * * * * brewpi python /home/brewpi/brewpi.py --checkstartuponly --dontrunfile /home/brewpi/brewpi.py 1>/dev/null 2>>/home/brewpi/logs/stderr.txt; [ $? != 0 ] && python -u /home/brewpi/brewpi.py 1>/home/brewpi/logs/stdout.txt 2>>/home/brewpi/logs/stderr.txt &" >/etc/cron.d/brewpi
+RUN echo "* * * * * brewpi python /home/brewpi/brewpi.py --checkstartuponly --dontrunfile /home/brewpi/brewpi.py 1>/dev/null 2>>/home/brewpi/logs/stderr.txt; [ \$? != 0 ] && python -u /home/brewpi/brewpi.py 1>/home/brewpi/logs/stdout.txt 2>>/home/brewpi/logs/stderr.txt &" >/etc/cron.d/brewpi
 RUN echo "#!/bin/bash" >/root/runbrewpi.sh
 RUN echo "/sbin/my_init &" >>/root/runbrewpi.sh
 RUN echo "sed -i 's#^port.*#port = socket://'\"\$AVR\"'#' /home/brewpi/settings/config.cfg" >>/root/runbrewpi.sh
