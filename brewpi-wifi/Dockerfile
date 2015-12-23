@@ -20,17 +20,19 @@ RUN sudo -u brewpi git clone --branch 0.3.8 --depth 1  https://github.com/BrewPi
     rm -rf /var/www/* && sudo -u www-data git clone https://github.com/BrewPi/brewpi-www /var/www 
 RUN sed -i 's#inWaiting = ser.inWaiting()#inWaiting = ser.readline()#' /home/brewpi/brewpi.py
 RUN sed -i 's#newData = ser.read(inWaiting)#newData = inWaiting#' /home/brewpi/brewpi.py
-RUN sed -i 's#ser = serial.Serial(port, baudrate=baud_rate, timeout=time_out)#ser = serial.serial_for_url(port, baudrate=baud_rate, timeout=0.75)#' /home/brewpi/BrewPiUtil.py
+RUN sed -i 's#ser = serial.Serial(port, baudrate=baud_rate, timeout=time_out)#ser = serial.serial_for_url(port, baudrate=baud_rate, timeout=0.6)#' /home/brewpi/BrewPiUtil.py
 RUN echo 'port = socket://example:23' > /home/brewpi/settings/config.cfg
 RUN echo 'altport = socket://example:23' >> /home/brewpi/settings/config.cfg
 RUN chown -R brewpi:users /home/brewpi/settings
 RUN chmod +x /home/brewpi/*.py
 RUN chmod +x /home/brewpi/utils/*.sh
-RUN echo "* * * * * brewpi python /home/brewpi/brewpi.py --checkstartuponly --dontrunfile /home/brewpi/brewpi.py 1>/dev/null 2>>/home/brewpi/logs/stderr.txt; [ \$? != 0 ] && python -u /home/brewpi/brewpi.py 1>/home/brewpi/logs/stdout.txt 2>>/home/brewpi/logs/stderr.txt &" >/etc/cron.d/brewpi
+RUN echo "TZ=$TZ" >/etc/cron.d/brewpi
+RUN echo "* * * * * brewpi python /home/brewpi/brewpi.py --checkstartuponly --dontrunfile /home/brewpi/brewpi.py 1>/dev/null 2>>/home/brewpi/logs/stderr.txt; [ \$? != 0 ] && python -u /home/brewpi/brewpi.py 1>/home/brewpi/logs/stdout.txt 2>>/home/brewpi/logs/stderr.txt &" >>/etc/cron.d/brewpi
 RUN echo "#!/bin/bash" >/root/runbrewpi.sh
 RUN echo "/sbin/my_init &" >>/root/runbrewpi.sh
 RUN echo "sed -i 's#^port.*#port = socket://'\"\$AVR\"'#' /home/brewpi/settings/config.cfg" >>/root/runbrewpi.sh
 RUN echo "sed -i 's#^altport.*#altport = socket://'\"\$AVR\"'#' /home/brewpi/settings/config.cfg" >>/root/runbrewpi.sh
+RUN echo "sed -i 's#^TZ.*#TZ='\"\$TZ\"'#' /etc/cron.d/brewpi" >>/root/runbrewpi.sh
 RUN echo "/usr/sbin/apache2ctl -D FOREGROUND" >>/root/runbrewpi.sh
 RUN chmod +x /root/runbrewpi.sh
 
