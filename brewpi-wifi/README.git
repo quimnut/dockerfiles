@@ -1,0 +1,7 @@
+This Dockerfile will build you an image for running brewpi connecting to an arduino with a serial to wifi bridge, like an esp8266 running esp-link.
+
+It expects the following environment to be set when being run.
+
+AVR=ip/host:port of serial wifi bridge, eg. AVR=192.168.1.1:23
+TZ=your time zone, eg. TZ=Australia/Brisbane
+
