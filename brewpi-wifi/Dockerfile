@@ -42,10 +42,10 @@ RUN echo "* * * * * brewpi python /home/brewpi/brewpi.py --checkstartuponly --do
 
 RUN mkdir -p /etc/my_init.d
 
-RUN echo "#!/bin/bash" >/etc/my_init.d/100-brewpi.sh
-RUN echo "sed -i 's#^port.*#port = socket://'\"\$AVR\"'#' /home/brewpi/settings/config.cfg" >>/etc/my_init.d/100-brewpi.sh
-RUN echo "sed -i 's#^altport.*#altport = socket://'\"\$AVR\"'#' /home/brewpi/settings/config.cfg" >>/etc/my_init.d/100-brewpi.sh
-RUN echo "sed -i 's#^TZ.*#TZ='\"\$TZ\"'#' /etc/cron.d/brewpi" >>/etc/my_init.d/100-brewpi.sh
+RUN echo '#!/bin/bash' >/etc/my_init.d/100-brewpi.sh
+RUN echo "if [ -z \${AVR+x} ]; then echo "AVR not set"; else sed -i 's#^port.*#port = socket://'\"\$AVR\"'#' /home/brewpi/settings/config.cfg; fi" >>/etc/my_init.d/100-brewpi.sh
+RUN echo "if [ -z \${AVR+x} ]; then echo "AVR not set"; else sed -i 's#^altport.*#altport = socket://'\"\$AVR\"'#' /home/brewpi/settings/config.cfg; fi" >>/etc/my_init.d/100-brewpi.sh
+RUN echo "if [ -z \${TZ+x} ]; then echo "TZ not set"; else sed -i 's#^TZ.*#TZ='\"\$TZ\"'#' /etc/cron.d/brewpi; fi" >>/etc/my_init.d/100-brewpi.sh
 RUN chmod +x /etc/my_init.d/100-brewpi.sh
 
 RUN mkdir /etc/service/apache2
