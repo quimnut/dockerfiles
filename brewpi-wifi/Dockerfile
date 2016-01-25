@@ -49,8 +49,8 @@ RUN echo "if [ -z \${TZ+x} ]; then echo "TZ not set"; else sed -i 's#^TZ.*#TZ='\
 RUN chmod +x /etc/my_init.d/100-brewpi.sh
 
 RUN mkdir /etc/service/apache2
-RUN echo "#!/bin/sh" >/etc/service/apache2/run
-RUN echo "exec /usr/sbin/apache2ctl -D FOREGROUND" >>/etc/service/apache2/run
+RUN echo '#!/bin/sh' >/etc/service/apache2/run
+RUN echo 'exec /usr/sbin/apache2ctl -D FOREGROUND' >>/etc/service/apache2/run
 RUN chmod +x /etc/service/apache2/run
 
 VOLUME /home/brewpi/data
