@@ -1,4 +1,4 @@
 dockerfiles!
 
-brewpi-wifi:    This Dockerfile will build you an image for running brewpi connecting to an arduino with a serial to wifi bridge, like an esp8266 running esp-link.
-
+brewpi-wifi:    This will build you an image for running brewpi connecting to an arduino with a serial to wifi bridge, like an esp8266 running esp-link.
+cloud9ide:      Cloud9 is an open source web IDE from https://c9.io/
