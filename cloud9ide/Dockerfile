@@ -21,7 +21,7 @@ RUN echo '#!/bin/sh' >/etc/service/cloud9/run
 RUN echo 'export NODE_ENV="production"' >>/etc/service/cloud9/run
 RUN echo 'export HOME=/home' >>/etc/service/cloud9/run
 RUN echo 'cd /cloud9' >>/etc/service/cloud9/run
-RUN echo 'exec sudo -u $(getent passwd 99 | cut -d: -f1) /usr/bin/node /cloud9/server.js --listen 0.0.0.0 --port 8080 -w /workspace -a $C9USER:$C9PASS' >>/etc/service/cloud9/run
+RUN echo 'exec chpst -u $(getent passwd 99 | cut -d: -f1) /usr/bin/node /cloud9/server.js --listen 0.0.0.0 --port 8080 -w /workspace -a $C9USER:$C9PASS' >>/etc/service/cloud9/run
 RUN chmod +x /etc/service/cloud9/run
 
 RUN touch /etc/service/cron/down
